@@ -1,17 +1,29 @@
 #include "Player.hpp"
+#include <raymath.h>
 #define ACCELERATION 10000.0
 
-Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 700.f}){
+Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
     position = pos;
 }
 
 
 void Player::MoveLeft(){
-    acceleration.x = -ACCELERATION;
+    desiredMovement.x -= 1;
+    Clamp(desiredMovement.x, -1, 1);
 }
 void Player::MoveRight(){
-    acceleration.x = ACCELERATION;
+    desiredMovement.x += 1;
+    Clamp(desiredMovement.x, -1, 1);
 }
+
 void Player::Stop(){
-    acceleration.x = 0;
+    desiredMovement.x = 0;
+}
+
+void Player::PreUpdate(float deltaTime){
+    acceleration.x = desiredMovement.x * ACCELERATION;
+
+    //fake drag
+    if(desiredMovement.x == 0) velocity.x = Lerp(velocity.x, 0.0f, 20.0f * deltaTime);
+    desiredMovement.x = 0;
 }
