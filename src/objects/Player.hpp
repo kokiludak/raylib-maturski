@@ -4,8 +4,7 @@
 class Player : public RigidBody {
 public:
     Player(Vector2 pos);
-    void PreUpdate(float deltaTime) override;
-    //void PostUpdate(float deltaTime) override;
+    void Update(float deltaTime) override;
     void MoveLeft();
     void MoveRight();
     void Stop();

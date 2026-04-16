@@ -1,5 +1,6 @@
 #include "Player.hpp"
 #include <raymath.h>
+#include <iostream>
 #define ACCELERATION 10000.0
 
 Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
@@ -20,7 +21,7 @@ void Player::Stop(){
     desiredMovement.x = 0;
 }
 
-void Player::PreUpdate(float deltaTime){
+void Player::Update(float deltaTime)  {
     acceleration.x = desiredMovement.x * ACCELERATION;
 
     //fake drag

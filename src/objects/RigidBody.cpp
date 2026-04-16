@@ -10,7 +10,7 @@ RigidBody::RigidBody(const RigidBodyParams& params)
 }
 
 void RigidBody::ApplyPhysics(float deltaTime) {
-    //acceleration.y = globalGravity * gravityScale;
+    acceleration.y = globalGravity * gravityScale;
     velocity.x += acceleration.x * deltaTime;
     velocity.y += acceleration.y * deltaTime;
 
@@ -23,15 +23,20 @@ void RigidBody::ApplyPhysics(float deltaTime) {
     position.y += velocity.y * deltaTime;
 }
 
-bool RigidBody::Collides(const RigidBody* other) const {
-    if(position.x > other->position.x + other->collider.area.width || position.x + collider.area.width < other->position.x) return false;
-    if(position.y > other->position.y + other->collider.area.height || position.y + collider.area.height < other->position.y) return false;
-    return true;
-}
+/*
+tretiram poziciju predmeta kao sredinu predmeta.
+racunam za sada da ce mi svi collideri u igrici biti pravougaonici,,
+da bi sebi malo olaksao posao.
+mozda postoji pametniji nacin da uradim ovu tranzlaciju u prostoru,
+mozda i treba da krenem da pisem helper biblioteku za ovakve operacije.
+posle cu mozda da ih ekstraktujem ako bude bilo dovoljno ovakvog cimanja.
+*/
 
-void RigidBody::Update(float deltaTime) {
-    PreUpdate(deltaTime);
-    ApplyPhysics(deltaTime);
-    PostUpdate(deltaTime);
+//VEC POSTOJI CHECKCOLLISION ZA RECTANGLES!!!!
+bool RigidBody::Collides(const RigidBody* other) const {
+
+    if(position.x - collider.area.width/2 > other->position.x + other->collider.area.width/2 || position.x + collider.area.width/2 < other->position.x - other->collider.area.width/2) return false;
+    if(position.y - collider.area.height/2 > other->position.y + other->collider.area.height/2 || position.y + collider.area.height/2 < other->position.y - other->collider.area.width/2) return false;
+    return true;
 }
 
