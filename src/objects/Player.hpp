@@ -4,6 +4,7 @@
 class Player : public RigidBody {
 public:
     Player(Vector2 pos);
+    Player(Rectangle transform);
     void Update(float deltaTime) override;
     void MoveLeft();
     void MoveRight();

@@ -1,5 +1,5 @@
 #include "PhysicsHandler.hpp"
-
+#include <algorithm>
 void PhysicsHandler::RegisterBody(RigidBody* body){
     bodies.emplace_back(body);
 }
@@ -41,7 +41,11 @@ void PhysicsHandler::ResolveCollisions(){
             RigidBody* a = bodies[i];
             CollisionBody* b = colliders[j];
             if(!ShouldCollide(a, b)) continue;
-            ResolveCollision(a, b);
+            if(a->Collides(b)){
+                //std::cout << "collision\n";
+                ResolveCollision(a, b);
+            }
+            
         }
     }
 }
@@ -60,23 +64,32 @@ takodje ovde ima dosta ponavljanja
 
 
 
-void PhysicsHandler::ResolveCollision(RigidBody* a, CollisionBody* b){
-    Vector2 aPos = a->GetPosition();
-    Vector2 bPos = b->GetPosition();
-    //right edge
-    if(aPos.x + a->collider.area.width/2 > bPos.x - b->collider.area.width/2){
-        a->SetPosition({bPos.x - b->collider.area.width/2 - a->collider.area.width/2, aPos.y});
-    }
-    //left edge
-    else {
-        a->SetPosition({bPos.x + b->collider.area.width/2 + a->collider.area.width/2, aPos.y});
-    }
+void PhysicsHandler::ResolveCollision(RigidBody* dynamicBody, CollisionBody* staticBody){
+    Rectangle r1 = dynamicBody->GetTransform();
+    Rectangle r2 = staticBody->GetTransform();
 
-    aPos = a->GetPosition();
-    if(aPos.y + a->collider.area.height/2 > bPos.y - b->collider.area.height/2){
-        a->SetPosition({aPos.x, bPos.y - b->collider.area.height/2 - a->collider.area.height/2});
+    float overlapLeft   = (r1.x + r1.width) - r2.x;
+    float overlapRight  = (r2.x + r2.width) - r1.x;
+    float overlapTop    = (r1.y + r1.height) - r2.y;
+    float overlapBottom = (r2.y + r2.height) - r1.y;
+
+    float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
+
+    if (minOverlap == overlapLeft) {
+        dynamicBody->Translate( {-overlapLeft, 0});      // push left
+        dynamicBody->velocity.x = 0;
     }
-    else{
-        a->SetPosition({aPos.x, bPos.y + b->collider.area.height/2 + a->collider.area.height/2});
+    else if (minOverlap == overlapRight) {
+        dynamicBody->Translate({overlapRight, 0});     // push right
+        dynamicBody->velocity.x = 0;
     }
+    else if (minOverlap == overlapTop) {
+        dynamicBody->Translate({0, -overlapTop});       // push up (landing on ground)
+        dynamicBody->velocity.y = 0;
+    }
+    else if (minOverlap == overlapBottom) {
+        dynamicBody->Translate({0, overlapBottom});    // push down (hit ceiling)
+        dynamicBody->velocity.y = 0;
+    }
+    
 }

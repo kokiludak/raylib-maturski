@@ -6,7 +6,7 @@
 #include "objects/Collision.hpp"
 #include "objects/CollisionBody.hpp"
 #define SCREEN_HEIGHT 1600
-#define SCREEN_WIDTH 900
+#define SCREEN_WIDTH 1600
 #define TARGET_FPS 120
 
 
@@ -19,9 +19,8 @@ int main()
     SetTargetFPS(TARGET_FPS);
     
     
-    Player player({100.0f, 100.0f});
+    Player player({100.0f, 100.0f, 100.0f, 100.0f});
     player.collider = {
-        {0, 0, 100, 100},
         LAYER_PLAYER,
         LAYER_ENEMY | LAYER_WALL
     };
@@ -37,16 +36,12 @@ int main()
 
 
     CollisionBody testWall;
-    testWall.SetPosition({600, 600});
-
-    std::cout << "position: " << testWall.GetPosition().x << ' ' << testWall.GetPosition().y << '\n';
+    testWall.SetTransform({1200, 600, 1200, 100});
+    testWall.SetCenter({1200, 600});
     testWall.collider = {
-        {0, 0, 1200, 100},
         LAYER_WALL,
         0
     };
-    std::cout << "height width " << testWall.collider.area.height << ' ' << testWall.collider.area.width << '\n';
-
     PhysicsHandler physicsHandler;
     physicsHandler.RegisterBody(&player);
     physicsHandler.RegisterCollider(&testWall);
@@ -57,18 +52,22 @@ int main()
         for(Command* c : inputs){
             c->execute();
         }
+        if(IsKeyPressed(KEY_R)) player.SetPosition({100, 100});
         float delta = GetFrameTime();
         player.Update(delta);
         physicsHandler.Update(delta);
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawRectangle(player.GetPosition().x - 50, player.GetPosition().y - 50, 100, 100, RAYWHITE);
-        DrawRectangle(testWall.GetPosition().x - testWall.collider.area.width/2, 
-            testWall.GetPosition().y - testWall.collider.area.height/2,
-            testWall.collider.area.width, testWall.collider.area.height,
+        DrawRectangle(player.GetPosition().x, player.GetPosition().y, 100, 100, RAYWHITE);
+        DrawRectangle(testWall.GetPosition().x, 
+            testWall.GetPosition().y,
+            testWall.GetTransform().width, testWall.GetTransform().height,
             ORANGE
             );
 
+        //Debug information
+        DrawText(TextFormat("Player pos: %d %d", (int)player.GetPosition().x, (int)player.GetPosition().y), 10, 30, 10, RAYWHITE);
+        DrawText(player.Collides(&testWall) ? "collide" : "ne collide", 10, 50, 10, RAYWHITE);
         DrawFPS(10, 10);
         EndDrawing();
     }

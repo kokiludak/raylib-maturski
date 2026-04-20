@@ -1,6 +1,6 @@
 #include "RigidBody.hpp"
 
-const float RigidBody::globalGravity = 1000.0f;
+const float RigidBody::globalGravity = 200.0f;
 RigidBody::RigidBody(const RigidBodyParams& params)
     : gravityScale(params.gravityScale),
       maxSpeedX(params.maxSpeedX),
@@ -19,8 +19,8 @@ void RigidBody::ApplyPhysics(float deltaTime) {
 
     if(velocity.y > maxSpeedY) velocity.y = maxSpeedY;
     if(velocity.y < -maxSpeedY) velocity.y = -maxSpeedY;
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
+    transform.x += velocity.x * deltaTime;
+    transform.y += velocity.y * deltaTime;
 }
 
 /*
@@ -33,10 +33,7 @@ posle cu mozda da ih ekstraktujem ako bude bilo dovoljno ovakvog cimanja.
 */
 
 //VEC POSTOJI CHECKCOLLISION ZA RECTANGLES!!!!
-bool RigidBody::Collides(const RigidBody* other) const {
-
-    if(position.x - collider.area.width/2 > other->position.x + other->collider.area.width/2 || position.x + collider.area.width/2 < other->position.x - other->collider.area.width/2) return false;
-    if(position.y - collider.area.height/2 > other->position.y + other->collider.area.height/2 || position.y + collider.area.height/2 < other->position.y - other->collider.area.width/2) return false;
-    return true;
+bool RigidBody::Collides(const CollisionBody* other) const {
+    return CheckCollisionRecs(this->transform, other->GetTransform());
 }
 

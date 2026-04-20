@@ -4,9 +4,12 @@
 #define ACCELERATION 10000.0
 
 Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
-    position = pos;
+    SetPosition(pos);
 }
 
+Player::Player(Rectangle transform) : RigidBody(RigidBodyParams {.maxSpeedX = 1500.f}){
+    SetTransform(transform);
+}
 
 void Player::MoveLeft(){
     desiredMovement.x -= 1;

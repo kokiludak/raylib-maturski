@@ -6,7 +6,6 @@ constexpr CollisionLayer LAYER_ENEMY = 1 << 2;
 constexpr CollisionLayer LAYER_WALL = 1 << 3;
 
 struct Collider {
-    Rectangle area;
     CollisionLayer layer = LAYER_DEFAULT;
     CollisionLayer mask = 0;
 };
