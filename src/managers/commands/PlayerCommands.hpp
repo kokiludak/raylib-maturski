@@ -17,6 +17,14 @@ private:
     Player* p;
 };
 
+class Fire : public Command{
+public:
+    Fire(Player *p);
+    void execute() override;
+private:
+    Player* p;
+};
+
 class Stop : public Command {
 public:
     Stop(Player *p);

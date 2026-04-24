@@ -2,16 +2,16 @@
 #include <raylib.h>
 class GameObject {
 public:
-     Vector2 GetPosition() const { return {transform.x, transform.y}; }
+    Vector2 GetPosition() const { return {transform.x, transform.y}; }
     Rectangle GetTransform() const { return transform; }
-    void SetPosition(const Vector2& pos) {
+    void SetPosition(const Vector2 pos) {
         transform.x = pos.x;
         transform.y = pos.y;
     }
     void SetTransform(const Rectangle transform){
         this->transform = transform;
     }
-    void Translate(const Vector2& delta){
+    void Translate(const Vector2 delta){
         transform.x += delta.x;
         transform.y += delta.y;
     }

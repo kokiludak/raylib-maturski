@@ -16,6 +16,14 @@ void MoveRight::execute(){
     p->MoveRight();
 }
 
+Fire::Fire(Player *player) : p(player){
+    inputMode = InputMode::Continuous;
+}
+
+void Fire::execute(){
+    p->Fire();
+}
+
 Stop::Stop(Player *player) : p(player) {
     inputMode = InputMode::Single;
 }

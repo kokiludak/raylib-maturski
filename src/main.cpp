@@ -2,9 +2,11 @@
 #include "managers/InputManager.hpp"
 #include "managers/commands/PlayerCommands.hpp"
 #include "managers/PhysicsHandler.hpp"
+#include "managers/GameManager.hpp"
 #include "objects/Player.hpp"
 #include "objects/Collision.hpp"
 #include "objects/CollisionBody.hpp"
+#include "objects/weapons/MachineGun.hpp"
 #define SCREEN_HEIGHT 1600
 #define SCREEN_WIDTH 1600
 #define TARGET_FPS 120
@@ -25,6 +27,7 @@ int main()
         LAYER_ENEMY | LAYER_WALL
     };
 
+
     MoveLeft moveLeft(&player);
     MoveRight moveRight(&player);
     Stop stop(&player);
@@ -42,9 +45,17 @@ int main()
         LAYER_WALL,
         0
     };
+
+
+
     PhysicsHandler physicsHandler;
     physicsHandler.RegisterBody(&player);
     physicsHandler.RegisterCollider(&testWall);
+
+    GameManager gameManager;
+    gameManager.RegisterObject(&player);
+    gameManager.RegisterObject(&testWall);
+
     while (!WindowShouldClose())
     {
 
