@@ -4,7 +4,7 @@
 #include "../CollisionBody.hpp"
 class Bullet : public CollisionBody {
 public:
-    virtual void Update() {};
+    int damage;
 };
 
 class Weapon {
@@ -17,6 +17,4 @@ protected:
     float cooldownTime;
     float currentCooldown;
     float recoil;
-private:
-    std::vector<Bullet*> bullets;
 };

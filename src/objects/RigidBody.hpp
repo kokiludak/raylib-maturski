@@ -4,7 +4,7 @@
 #include "CollisionBody.hpp"
 struct RigidBodyParams {
     float maxSpeedX = 300.0f;
-    float maxSpeedY = 800.0f;
+    float maxSpeedY = 2000.0f;
     float gravityScale = 1.0f;
 };
 

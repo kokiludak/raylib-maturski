@@ -1,15 +1,14 @@
 #include "GameManager.hpp"
-
-void GameManager::RegisterObject(GameObject* obj){
-    objects.push_back(obj);
-}
-
-void GameManager::UnRegisterObject(GameObject* obj){
-    //todo ne mogu sad o ovome da razmisljam
+#include "../objects/GameObject.hpp"
+#include <iostream>
+void GameManager::RegisterObject(std::unique_ptr<GameObject> obj){
+    std::cout << "Added object\n";
+    objects.push_back(std::move(obj));
 }
 
 void GameManager::Update(float deltaTime){
-    for(GameObject* obj : objects){
+    for(auto& obj : objects){
         obj->Update(deltaTime);
+        obj->Draw();
     }
 }

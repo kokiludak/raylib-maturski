@@ -6,12 +6,13 @@ public:
     Player(Vector2 pos);
     Player(Rectangle transform);
     void Update(float deltaTime) override;
+    void Draw() override;
     void MoveLeft();
     void MoveRight();
     void Fire();
     void Stop();
+    Weapon* weapon;
 private:
     Vector2 desiredMovement;
-    Weapon* weapon;
     int hp;
 };

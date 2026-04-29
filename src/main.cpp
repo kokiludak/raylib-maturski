@@ -19,29 +19,34 @@ int main()
     
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "g");
     SetTargetFPS(TARGET_FPS);
-    
-    
-    Player player({100.0f, 100.0f, 100.0f, 100.0f});
-    player.collider = {
+    GameManager gameManager;
+    GameObject::manager = &gameManager;
+
+    Player* player = GameObject::Instantiate<Player>(Rectangle{100.0f, 100.0f, 100.0f, 100.0f});
+    player->collider = {
         LAYER_PLAYER,
         LAYER_ENEMY | LAYER_WALL
     };
 
+    MachineGun mg(5, 300.0f, 0.5f);
+    player->weapon = &mg;
 
-    MoveLeft moveLeft(&player);
-    MoveRight moveRight(&player);
-    Stop stop(&player);
+
+    MoveLeft moveLeft(player);
+    MoveRight moveRight(player);
+    Stop stop(player);
+    Fire fire(player);
 
     InputManager input;
     input.setLeft(&moveLeft);
     input.setRight(&moveRight);
     input.setStop(&stop);
+    input.setFire(&fire);
 
-
-    CollisionBody testWall;
-    testWall.SetTransform({1200, 600, 1200, 100});
-    testWall.SetCenter({1200, 600});
-    testWall.collider = {
+    CollisionBody* testWall = GameObject::Instantiate<CollisionBody>();
+    testWall->SetTransform({1200, 600, 1200, 100});
+    testWall->SetCenter({600, 600});
+    testWall->collider = {
         LAYER_WALL,
         0
     };
@@ -49,13 +54,11 @@ int main()
 
 
     PhysicsHandler physicsHandler;
-    physicsHandler.RegisterBody(&player);
-    physicsHandler.RegisterCollider(&testWall);
+    physicsHandler.RegisterBody(player);
+    physicsHandler.RegisterCollider(testWall);
 
-    GameManager gameManager;
-    gameManager.RegisterObject(&player);
-    gameManager.RegisterObject(&testWall);
-
+    
+    float timer = 20.0f;
     while (!WindowShouldClose())
     {
 
@@ -63,22 +66,27 @@ int main()
         for(Command* c : inputs){
             c->execute();
         }
-        if(IsKeyPressed(KEY_R)) player.SetPosition({100, 100});
+        if(IsKeyPressed(KEY_R)) player->SetPosition({100, 100});
         float delta = GetFrameTime();
-        player.Update(delta);
+
+        gameManager.Update(delta);
+        //player->Update(delta);
         physicsHandler.Update(delta);
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawRectangle(player.GetPosition().x, player.GetPosition().y, 100, 100, RAYWHITE);
-        DrawRectangle(testWall.GetPosition().x, 
-            testWall.GetPosition().y,
-            testWall.GetTransform().width, testWall.GetTransform().height,
+        //DrawRectangle(player.GetPosition().x, player.GetPosition().y, 100, 100, RAYWHITE);
+        DrawRectangle(testWall->GetPosition().x, 
+            testWall->GetPosition().y,
+            testWall->GetTransform().width, testWall->GetTransform().height,
             ORANGE
             );
 
         //Debug information
-        DrawText(TextFormat("Player pos: %d %d", (int)player.GetPosition().x, (int)player.GetPosition().y), 10, 30, 10, RAYWHITE);
-        DrawText(player.Collides(&testWall) ? "collide" : "ne collide", 10, 50, 10, RAYWHITE);
+        DrawText(TextFormat("Player pos: %d %d", (int)player->GetPosition().x, (int)player->GetPosition().y), 10, 30, 10, RAYWHITE);
+        DrawText(player->Collides(testWall) ? "collide" : "ne collide", 10, 50, 10, RAYWHITE);
+
+        timer -= delta;
+        DrawText(TextFormat("Timer: %f", timer), 10, 70, 10, RAYWHITE);
         DrawFPS(10, 10);
         EndDrawing();
     }

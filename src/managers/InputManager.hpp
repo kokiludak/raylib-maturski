@@ -16,13 +16,11 @@ public:
     void setRight(Command* c);
     void setStop(Command* c);
     void setFire(Command* c);
-    void setCeaseFire(Command* c);
     std::vector<Command*> handleInput();
 private:
-    Command* left;
-    Command* right;
-    Command* fire;
-    Command* stop;
-    Command* ceaseFire;
+    Command* left = nullptr;
+    Command* right = nullptr;
+    Command* fire = nullptr;
+    Command* stop = nullptr;
 };
 

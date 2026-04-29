@@ -25,7 +25,6 @@ std::vector<Command*> InputManager::handleInput(){
     if(fire){
         if(IsKeyPressed(FIRE) && fire->inputMode == InputMode::Single) commands.emplace_back(fire);
         else if(IsKeyDown(FIRE) && fire->inputMode == InputMode::Continuous) commands.emplace_back(fire);
-        else if(IsKeyReleased(FIRE)) commands.emplace_back(ceaseFire);
     }
     return commands;
 };

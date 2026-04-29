@@ -1,6 +1,6 @@
 #include "RigidBody.hpp"
 
-const float RigidBody::globalGravity = 200.0f;
+const float RigidBody::globalGravity = 2000.0f;
 RigidBody::RigidBody(const RigidBodyParams& params)
     : gravityScale(params.gravityScale),
       maxSpeedX(params.maxSpeedX),
