@@ -13,8 +13,8 @@ public:
     explicit RigidBody(const RigidBodyParams& params = {});
     void ApplyPhysics(float deltaTime);
     bool Collides(const CollisionBody* other) const;
-    virtual void onCollision(const RigidBody* other) const {}
-
+    virtual void onCollision(const CollisionBody* other) {}
+    bool isGrounded;
     //privremeno radim ovo...
     //izgleda da cu mozda trebati da napravim ceo mass i force system ali nadamo se da nece doci do toga...
     Vector2 velocity {0, 0};

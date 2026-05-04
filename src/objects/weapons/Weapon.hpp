@@ -10,6 +10,9 @@ public:
 class Weapon {
 public:
     void Update(float deltaTime);
+
+    //mozda nije pametno
+    void CoolDown();
     virtual bool Fire(Vector2 position) = 0;
     virtual float GetRecoil() = 0;
 protected:

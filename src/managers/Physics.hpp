@@ -3,12 +3,14 @@
 #include "../objects/CollisionBody.hpp"
 #include <vector>
 
-class PhysicsHandler {
+class Physics {
 public:
     void RegisterBody( RigidBody* body);
     void UnRegisterBody( RigidBody* body);
     void RegisterCollider( CollisionBody* collider);
-    void UnRegstierCollider( CollisionBody* collider);
+    void UnRegisterCollider( CollisionBody* collider);
+
+    static bool CheckBox(Rectangle box, CollisionLayer mask);
     void Update(float deltaTime);
 
 private:

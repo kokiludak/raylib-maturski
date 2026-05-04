@@ -1,27 +1,29 @@
-#include "PhysicsHandler.hpp"
+#include "Physics.hpp"
 #include <algorithm>
-void PhysicsHandler::RegisterBody(RigidBody* body){
+
+void Physics::RegisterBody(RigidBody* body){
     bodies.emplace_back(body);
 }
 
-void PhysicsHandler::RegisterCollider(CollisionBody* collider){
+void Physics::RegisterCollider(CollisionBody* collider){
     colliders.emplace_back(collider);
 }
 //najjace da mozes da uradis unregister ako imas vector... to ti dodje n^2 tj posto ti nije bitan redosled moze u n.
 
-bool PhysicsHandler::ShouldCollide(const RigidBody* a, const CollisionBody* b)  const {
+bool Physics::ShouldCollide(const RigidBody* a, const CollisionBody* b)  const {
     return (a->collider.mask & b->collider.layer);
 }
 
-void PhysicsHandler::Update(float deltaTime){
+void Physics::Update(float deltaTime){
     for(RigidBody* body : bodies){
+        body->isGrounded = false;
         body->ApplyPhysics(deltaTime);
     }
 
     ResolveCollisions();
 }
 
-void PhysicsHandler::ResolveCollisions(){
+void Physics::ResolveCollisions(){
     for(unsigned int i = 0; i < bodies.size(); ++i){
         //check against bodies...
         for(unsigned int j = 0; j < bodies.size(); ++j){
@@ -43,6 +45,7 @@ void PhysicsHandler::ResolveCollisions(){
             if(!ShouldCollide(a, b)) continue;
             if(a->Collides(b)){
                 //std::cout << "collision\n";
+                a->onCollision(b);
                 ResolveCollision(a, b);
             }
             
@@ -64,7 +67,7 @@ takodje ovde ima dosta ponavljanja
 
 
 
-void PhysicsHandler::ResolveCollision(RigidBody* dynamicBody, CollisionBody* staticBody){
+void Physics::ResolveCollision(RigidBody* dynamicBody, CollisionBody* staticBody){
     Rectangle r1 = dynamicBody->GetTransform();
     Rectangle r2 = staticBody->GetTransform();
 
@@ -73,23 +76,28 @@ void PhysicsHandler::ResolveCollision(RigidBody* dynamicBody, CollisionBody* sta
     float overlapTop    = (r1.y + r1.height) - r2.y;
     float overlapBottom = (r2.y + r2.height) - r1.y;
 
-    float minOverlap = std::min({overlapLeft, overlapRight, overlapTop, overlapBottom});
+    const float slop = 0.001f;
+    float minX = std::min(overlapLeft, overlapRight);
+    float minY = std::min(overlapTop, overlapBottom);
 
-    if (minOverlap == overlapLeft) {
-        dynamicBody->Translate( {-overlapLeft, 0});      // push left
+    if(minX < minY){
+        if(overlapLeft == minX){
+            dynamicBody->Translate( {-(overlapLeft + slop), 0});
+        }
+        else{
+            dynamicBody->Translate({overlapRight + slop, 0});
+        }
         dynamicBody->velocity.x = 0;
     }
-    else if (minOverlap == overlapRight) {
-        dynamicBody->Translate({overlapRight, 0});     // push right
-        dynamicBody->velocity.x = 0;
-    }
-    else if (minOverlap == overlapTop) {
-        dynamicBody->Translate({0, -overlapTop});       // push up (landing on ground)
+    else{
+        if(overlapTop == minY){
+            //is grounded. mozda napravi probleme ako igrac frame perfect skace itd.
+            dynamicBody->isGrounded = true;
+            dynamicBody->Translate({0, -(overlapTop + slop)});       // push up (landing on ground)
+        }
+        else{
+            dynamicBody->Translate({0, overlapBottom + slop});    // push down (hit ceiling)
+        }
         dynamicBody->velocity.y = 0;
     }
-    else if (minOverlap == overlapBottom) {
-        dynamicBody->Translate({0, overlapBottom});    // push down (hit ceiling)
-        dynamicBody->velocity.y = 0;
-    }
-    
 }

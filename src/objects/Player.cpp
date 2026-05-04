@@ -1,10 +1,13 @@
 #include "Player.hpp"
+#include "../managers/Physics.hpp"
 #include <raylib.h>
 #include <raymath.h>
 #include <iostream>
 #include <algorithm>
-#define ACCELERATION 10000.0
 
+//zasto sam ovo stavio kao definition?
+#define ACCELERATION 10000.0
+#define JUMP_HEIGHT 1000.0
 Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
     SetPosition(pos);
 }
@@ -23,7 +26,11 @@ void Player::MoveRight(){
 }
 
 void Player::Fire(){
-    if(weapon->Fire(GetCenter())) velocity.y = std::min(velocity.y, -weapon->GetRecoil());
+    if(isGrounded){
+        velocity.y = -JUMP_HEIGHT;
+        weapon->CoolDown();
+    }
+    else if(weapon->Fire(GetCenter())) velocity.y = std::min(velocity.y, -weapon->GetRecoil());
 }
 
 void Player::Stop(){
@@ -44,3 +51,16 @@ void Player::Draw(){
     Rectangle transform = GetTransform();
     DrawRectangle(transform.x, transform.y, transform.width, transform.height, RAYWHITE);
 }
+
+
+
+/*void Player::onCollision(const CollisionBody* other) {
+    if(other->collider.layer == LAYER_WALL){
+        std::cout<<"im ground man\n";
+        isGrounded = true;
+    }
+}
+nek ostane ovo ovde idejno.
+pravilan redosled je input -> update -> physics -> render -> repeat.
+
+*/

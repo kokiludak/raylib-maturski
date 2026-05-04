@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include "managers/InputManager.hpp"
 #include "managers/commands/PlayerCommands.hpp"
-#include "managers/PhysicsHandler.hpp"
+#include "managers/Physics.hpp"
 #include "managers/GameManager.hpp"
 #include "objects/Player.hpp"
 #include "objects/Collision.hpp"
@@ -28,7 +28,7 @@ int main()
         LAYER_ENEMY | LAYER_WALL
     };
 
-    MachineGun mg(5, 300.0f, 0.5f);
+    MachineGun mg(5, 300.0f, 0.15f);
     player->weapon = &mg;
 
 
@@ -53,28 +53,29 @@ int main()
 
 
 
-    PhysicsHandler physicsHandler;
-    physicsHandler.RegisterBody(player);
-    physicsHandler.RegisterCollider(testWall);
+    Physics physics;
+    physics.RegisterBody(player);
+    physics.RegisterCollider(testWall);
 
     
-    float timer = 20.0f;
     while (!WindowShouldClose())
     {
-
+        float delta = GetFrameTime();
         std::vector<Command*> inputs = input.handleInput();
         for(Command* c : inputs){
             c->execute();
         }
         if(IsKeyPressed(KEY_R)) player->SetPosition({100, 100});
-        float delta = GetFrameTime();
+        
 
         gameManager.Update(delta);
         //player->Update(delta);
-        physicsHandler.Update(delta);
+        physics.Update(delta);
         BeginDrawing();
         ClearBackground(BLACK);
-        //DrawRectangle(player.GetPosition().x, player.GetPosition().y, 100, 100, RAYWHITE);
+
+
+        gameManager.Render();
         DrawRectangle(testWall->GetPosition().x, 
             testWall->GetPosition().y,
             testWall->GetTransform().width, testWall->GetTransform().height,
@@ -85,8 +86,7 @@ int main()
         DrawText(TextFormat("Player pos: %d %d", (int)player->GetPosition().x, (int)player->GetPosition().y), 10, 30, 10, RAYWHITE);
         DrawText(player->Collides(testWall) ? "collide" : "ne collide", 10, 50, 10, RAYWHITE);
 
-        timer -= delta;
-        DrawText(TextFormat("Timer: %f", timer), 10, 70, 10, RAYWHITE);
+        DrawText(TextFormat("Grounded: %s", player->isGrounded ? "yes\n" : "no\n"), 10, 70, 10, RAYWHITE);
         DrawFPS(10, 10);
         EndDrawing();
     }
