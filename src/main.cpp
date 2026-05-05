@@ -58,7 +58,7 @@ int main()
     physics.RegisterCollider(testWall);
 
     std::cout << "i am start man\n";
-    std::cerr << "ALO bre\n";
+    std::cout << "i am sigma man\n";
     while (!WindowShouldClose())
     {
         float delta = GetFrameTime();
@@ -80,7 +80,7 @@ int main()
         DrawRectangle(testWall->GetPosition().x, 
             testWall->GetPosition().y,
             testWall->GetTransform().width, testWall->GetTransform().height,
-            ORANGE
+            BLUE
             );
 
         //Debug information
