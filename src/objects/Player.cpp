@@ -27,6 +27,7 @@ void Player::MoveRight(){
 
 void Player::Fire(){
     if(isGrounded){
+        std::cout<<"i am jump man\n";
         velocity.y = -JUMP_HEIGHT;
         weapon->CoolDown();
     }

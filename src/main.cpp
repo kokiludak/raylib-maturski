@@ -57,7 +57,8 @@ int main()
     physics.RegisterBody(player);
     physics.RegisterCollider(testWall);
 
-    
+    std::cout << "i am start man\n";
+    std::cerr << "ALO bre\n";
     while (!WindowShouldClose())
     {
         float delta = GetFrameTime();

@@ -10,7 +10,7 @@ CXX := g++
 RAYLIB_PATH := C:/raylib/raylib
 
 INCLUDES := -I. -I$(RAYLIB_PATH)/src
-LIBS := -L$(RAYLIB_PATH)/src -lraylib -lopengl32 -lgdi32 -lwinmm
+LIBS := -L$(RAYLIB_PATH)/src -lraylib -lopengl32 -lgdi32 -lwinmm -mconsole
 
 CXXFLAGS := -std=c++17 -Wall -O0 -g -MMD -MP
 
