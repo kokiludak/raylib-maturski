@@ -7,3 +7,22 @@ void Weapon::Update(float deltaTime){
 void Weapon::CoolDown(){
     currentCooldown = cooldownTime;
 }
+
+void Weapon::Reload(){
+    currentAmmo = maxAmmo;
+}
+
+float Weapon::GetRecoil(){
+    return recoil;
+}
+
+bool Weapon::Fire(Vector2 position){
+    if(currentCooldown > 0.0f) return false;
+
+    if(currentAmmo <= 0) return false;
+
+    OnFire(position);
+    currentAmmo--;
+    CoolDown();
+    return true;
+}

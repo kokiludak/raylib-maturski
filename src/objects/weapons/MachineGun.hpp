@@ -13,7 +13,9 @@ private:
 
 class MachineGun : public Weapon {
 public:
-    bool Fire(Vector2 position) override;
-    float GetRecoil() override;
-    MachineGun(int ammo, float recoil, float CoolDownTime);
+    MachineGun(int maxAmmo, float coolDown, float recoil) : Weapon(
+        maxAmmo, coolDown, recoil
+    )
+    {}
+    void OnFire(Vector2 position) override;
 };

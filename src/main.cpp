@@ -28,7 +28,7 @@ int main()
         LAYER_ENEMY | LAYER_WALL
     };
 
-    MachineGun mg(5, 300.0f, 0.15f);
+    MachineGun mg(5,0.15f, 300.0f);
     player->weapon = &mg;
 
 

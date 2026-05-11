@@ -41,16 +41,22 @@ void Player::Stop(){
 void Player::Update(float deltaTime)  {
     acceleration.x = desiredMovement.x * ACCELERATION;
 
+    if(isGrounded) weapon->Reload();
+  
     //ne znam da li je ovo u redu da se radi ovako
     if(weapon != nullptr) weapon->Update(deltaTime);
     //fake drag
     if(desiredMovement.x == 0) velocity.x = Lerp(velocity.x, 0.0f, 20.0f * deltaTime);
     desiredMovement.x = 0;
+    transform.x = Clamp(transform.x, 0, 1000);
 }
 
 void Player::Draw(){
     Rectangle transform = GetTransform();
     DrawRectangle(transform.x, transform.y, transform.width, transform.height, RAYWHITE);
+
+    //Bounds
+    DrawRectangleLines(0,0,1000,1000, RED);
 }
 
 

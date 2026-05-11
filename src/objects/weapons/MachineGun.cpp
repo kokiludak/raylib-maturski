@@ -15,21 +15,9 @@ void MachineGunBullet::Draw(){
     DrawCircle(position.x, position.y, GetTransform().width, RAYWHITE);
 }
 
-MachineGun::MachineGun(int ammo, float recoil, float cooldownTime){
-    this->ammo = ammo;
-    this->recoil = recoil;
-    this->cooldownTime = cooldownTime;
-}
+void MachineGun::OnFire(Vector2 position){
 
-float MachineGun::GetRecoil(){
-    return recoil;
-}
-
-bool MachineGun::Fire(Vector2 position){
-    if(currentCooldown > 0) return false;
     //ovo je verovatno uzasno
     MachineGunBullet* bullet = GameObject::Instantiate<MachineGunBullet>(3000);
     bullet->SetCenter(position);
-    currentCooldown = cooldownTime;
-    return true;
 }

@@ -9,15 +9,32 @@ public:
 
 class Weapon {
 public:
+    Weapon(
+        int maxAmmo,
+        float cooldownTime,
+        float recoil
+    ) :
+    cooldownTime(cooldownTime),
+    currentCooldown(0.0f),
+    recoil(recoil),
+    maxAmmo(maxAmmo),
+    currentAmmo(maxAmmo)
+    {}
+
     void Update(float deltaTime);
 
     //mozda nije pametno
     void CoolDown();
-    virtual bool Fire(Vector2 position) = 0;
-    virtual float GetRecoil() = 0;
+    void Reload();
+    bool Fire(Vector2 position);
+    float GetRecoil();
 protected:
-    int ammo;
     float cooldownTime;
     float currentCooldown;
     float recoil;
+
+    virtual void OnFire(Vector2 position) {};
+private:
+    int maxAmmo;
+    int currentAmmo;
 };
