@@ -13,7 +13,7 @@ public:
     void MoveRight();
     void Fire();
     void Stop();
-    Weapon* weapon;
+    Weapon* weapon = nullptr;
 private:
     Vector2 desiredMovement;
     int hp;

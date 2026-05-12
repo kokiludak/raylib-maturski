@@ -5,9 +5,9 @@
 #include <iostream>
 #include <algorithm>
 
-//zasto sam ovo stavio kao definition?
-#define ACCELERATION 10000.0
-#define JUMP_HEIGHT 1000.0
+
+constexpr float ACCELERATION = 10000.0;
+constexpr float JUMP_HEIGHT = 1000.0;
 Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
     SetPosition(pos);
 }
@@ -22,16 +22,15 @@ void Player::MoveLeft(){
 }
 void Player::MoveRight(){
     desiredMovement.x += 1;
-    Clamp(desiredMovement.x, -1, 1);
+    desiredMovement.x = Clamp(desiredMovement.x, -1, 1);
 }
 
 void Player::Fire(){
     if(isGrounded){
-        std::cout<<"i am jump man\n";
         velocity.y = -JUMP_HEIGHT;
-        weapon->CoolDown();
+        if(weapon != nullptr) weapon->CoolDown();
     }
-    else if(weapon->Fire(GetCenter())) velocity.y = std::min(velocity.y, -weapon->GetRecoil());
+    else if(weapon != nullptr && weapon->Fire(GetCenter())) velocity.y = std::min(velocity.y, -weapon->GetRecoil());
 }
 
 void Player::Stop(){
@@ -48,15 +47,12 @@ void Player::Update(float deltaTime)  {
     //fake drag
     if(desiredMovement.x == 0) velocity.x = Lerp(velocity.x, 0.0f, 20.0f * deltaTime);
     desiredMovement.x = 0;
-    transform.x = Clamp(transform.x, 0, 1000);
+    
 }
 
 void Player::Draw(){
     Rectangle transform = GetTransform();
     DrawRectangle(transform.x, transform.y, transform.width, transform.height, RAYWHITE);
-
-    //Bounds
-    DrawRectangleLines(0,0,1000,1000, RED);
 }
 
 

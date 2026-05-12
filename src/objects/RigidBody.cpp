@@ -1,5 +1,5 @@
 #include "RigidBody.hpp"
-
+#include "raymath.h"
 const float RigidBody::globalGravity = 2000.0f;
 RigidBody::RigidBody(const RigidBodyParams& params)
     : gravityScale(params.gravityScale),

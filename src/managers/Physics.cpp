@@ -1,5 +1,6 @@
 #include "Physics.hpp"
 #include <algorithm>
+#include <raymath.h>
 
 void Physics::RegisterBody(RigidBody* body){
     bodies.emplace_back(body);
@@ -18,6 +19,11 @@ void Physics::Update(float deltaTime){
     for(RigidBody* body : bodies){
         body->isGrounded = false;
         body->ApplyPhysics(deltaTime);
+        Rectangle bodyT = body->GetTransform();
+        if(bodyT.x < minBound) body->Translate({minBound-bodyT.x, 0});
+        if(bodyT.x + bodyT.width > maxBound) {
+            body->Translate({-(bodyT.x + bodyT.width - maxBound), 0});
+        }
     }
 
     ResolveCollisions();

@@ -9,11 +9,15 @@ public:
     void UnRegisterBody( RigidBody* body);
     void RegisterCollider( CollisionBody* collider);
     void UnRegisterCollider( CollisionBody* collider);
-
+    void SetBounds(int minBound, int maxBound){
+        this->minBound = minBound;
+        this->maxBound = maxBound;
+    }
     static bool CheckBox(Rectangle box, CollisionLayer mask);
     void Update(float deltaTime);
 
 private:
+    int minBound, maxBound;
     std::vector<RigidBody*> bodies;
     std::vector<CollisionBody*> colliders;
     void ResolveCollisions();

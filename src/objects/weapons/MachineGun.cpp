@@ -1,4 +1,5 @@
 #include "MachineGun.hpp"
+
 #include <raylib.h>
 
 void MachineGunBullet::Update(float deltaTime){
@@ -7,7 +8,7 @@ void MachineGunBullet::Update(float deltaTime){
 
 MachineGunBullet::MachineGunBullet(float velocity) : velocity(velocity){
     //molim te promeni ovo
-    SetTransform({GetTransform().x, GetTransform().y, 50, 50});
+    SetTransform({0, 0, 50, 50});
 }
 
 void MachineGunBullet::Draw(){
@@ -16,8 +17,6 @@ void MachineGunBullet::Draw(){
 }
 
 void MachineGun::OnFire(Vector2 position){
-
-    //ovo je verovatno uzasno
-    MachineGunBullet* bullet = GameObject::Instantiate<MachineGunBullet>(3000);
+    MachineGunBullet* bullet = SpawnBus::Spawn<MachineGunBullet>(3000);
     bullet->SetCenter(position);
 }

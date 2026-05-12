@@ -6,7 +6,7 @@ class Command{
 public:
     virtual ~Command() = default;
     virtual void execute() = 0;
-    InputMode inputMode;
+    InputMode inputMode = InputMode::Single;
 };
 
 

@@ -1,9 +1,9 @@
 #include "InputManager.hpp"
 #include <raylib.h>
 
-#define LEFT KEY_A
-#define RIGHT KEY_D
-#define FIRE KEY_SPACE
+constexpr int LEFT = KEY_A;
+constexpr int RIGHT = KEY_D;
+constexpr int FIRE  = KEY_SPACE;
 
 void InputManager::setLeft(Command* c) {left = c; }
 void InputManager::setRight(Command* c) {right = c; }

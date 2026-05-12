@@ -1,5 +1,6 @@
 #pragma once
 #include "Weapon.hpp"
+#include "../../managers/SpawnEvent.hpp"
 #include "../CollisionBody.hpp"
 
 class MachineGunBullet : public Bullet {

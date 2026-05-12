@@ -1,24 +1,9 @@
 #pragma once
 #include <raylib.h>
 #include <memory>
-#include "../managers/GameManager.hpp"
-class GameManager;
 
 class GameObject {
 public:
-    static GameManager* manager;
-    template<typename T, typename... Args>
-    static T* Instantiate(Args&&... args){
-        static_assert(std::is_base_of<GameObject, T>());
-
-        auto obj = std::make_unique<T>(std::forward<Args>(args)...);
-        T* raw = obj.get();
-
-        if(manager){
-            manager->RegisterObject(std::move(obj));
-        }
-        return raw;
-    }
     Vector2 GetPosition() const { return {transform.x, transform.y}; }
     Rectangle GetTransform() const { return transform; }
     void SetPosition(const Vector2 pos) {

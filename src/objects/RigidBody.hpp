@@ -4,7 +4,7 @@
 #include "CollisionBody.hpp"
 struct RigidBodyParams {
     float maxSpeedX = 300.0f;
-    float maxSpeedY = 2000.0f;
+    float maxSpeedY = 4000.0f;
     float gravityScale = 1.0f;
 };
 
@@ -14,7 +14,7 @@ public:
     void ApplyPhysics(float deltaTime);
     bool Collides(const CollisionBody* other) const;
     virtual void onCollision(const CollisionBody* other) {}
-    bool isGrounded;
+    bool isGrounded = false;
     //privremeno radim ovo...
     //izgleda da cu mozda trebati da napravim ceo mass i force system ali nadamo se da nece doci do toga...
     Vector2 velocity {0, 0};
