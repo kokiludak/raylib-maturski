@@ -15,12 +15,12 @@ public:
     }
     static bool CheckBox(Rectangle box, CollisionLayer mask);
     void Update(float deltaTime);
-
+    const int UPS = 120;
 private:
-    int minBound, maxBound;
+    int minBound = INT_MIN, maxBound = INT_MAX;
     std::vector<RigidBody*> bodies;
     std::vector<CollisionBody*> colliders;
     void ResolveCollisions();
-    bool ShouldCollide(const RigidBody* a, const CollisionBody *b) const;
+    bool ShouldCollide(const CollisionBody* a, const CollisionBody *b) const;
     void ResolveCollision(RigidBody* a, CollisionBody *b);
 };

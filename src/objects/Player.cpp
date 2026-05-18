@@ -8,6 +8,8 @@
 
 constexpr float ACCELERATION = 10000.0;
 constexpr float JUMP_HEIGHT = 1000.0;
+constexpr float BOUNCE_HEIGHT = 400.0;
+
 Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
     SetPosition(pos);
 }
@@ -38,7 +40,7 @@ void Player::Stop(){
 }
 
 void Player::Update(float deltaTime)  {
-    acceleration.x = desiredMovement.x * ACCELERATION;
+    AddAcceleration({desiredMovement.x * ACCELERATION, 0});
 
     if(isGrounded) weapon->Reload();
   
@@ -57,13 +59,9 @@ void Player::Draw(){
 
 
 
-/*void Player::onCollision(const CollisionBody* other) {
-    if(other->collider.layer == LAYER_WALL){
-        std::cout<<"im ground man\n";
-        isGrounded = true;
+void Player::OnCollision(const CollisionBody* other) {
+    if(other->collider.layer == LAYER_ENEMY){
+        velocity.y = -BOUNCE_HEIGHT;
+        weapon->Reload();
     }
 }
-nek ostane ovo ovde idejno.
-pravilan redosled je input -> update -> physics -> render -> repeat.
-
-*/

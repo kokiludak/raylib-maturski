@@ -36,6 +36,7 @@ public:
     virtual void Draw() {}
     virtual ~GameObject() = default;
     virtual void Update(float deltaTime) {}
+    bool alive = true;
 protected:
     Rectangle transform;
 };

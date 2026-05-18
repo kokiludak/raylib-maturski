@@ -7,6 +7,7 @@ class MachineGunBullet : public Bullet {
 public:
     MachineGunBullet(float velocity);
     void Update(float deltaTime) override;
+    void OnCollision(const CollisionBody* other) override;
     void Draw() override;
 private:
     float velocity;

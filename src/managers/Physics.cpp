@@ -2,16 +2,37 @@
 #include <algorithm>
 #include <raymath.h>
 
+/*
+Generalno ne znam koji me je demon obuzeo da pravim asimetricne kolizije,
+kako to moze biti dobro, bog zna haha... mozda i nije toliko strasno ali\
+stvarno nemam reci
+
+*/
+
+
 void Physics::RegisterBody(RigidBody* body){
     bodies.emplace_back(body);
+}
+
+void Physics::UnRegisterBody(RigidBody* body){
+    bodies.erase(
+        std::remove(bodies.begin(), bodies.end(), body),
+        bodies.end()
+    );
 }
 
 void Physics::RegisterCollider(CollisionBody* collider){
     colliders.emplace_back(collider);
 }
-//najjace da mozes da uradis unregister ako imas vector... to ti dodje n^2 tj posto ti nije bitan redosled moze u n.
 
-bool Physics::ShouldCollide(const RigidBody* a, const CollisionBody* b)  const {
+void Physics::UnRegisterCollider(CollisionBody* collider){
+    colliders.erase(
+        std::remove(colliders.begin(), colliders.end(), collider),
+        colliders.end()
+    );
+}
+
+bool Physics::ShouldCollide(const CollisionBody* a, const CollisionBody* b)  const {
     return (a->collider.mask & b->collider.layer);
 }
 
@@ -41,7 +62,7 @@ void Physics::ResolveCollisions(){
 
             if(a->Collides(b)){
                 ResolveCollision(a, b);
-                a->onCollision(b);
+                a->OnCollision(b);
             }
         }
         //check against colliders(...staticbodies)
@@ -51,10 +72,24 @@ void Physics::ResolveCollisions(){
             if(!ShouldCollide(a, b)) continue;
             if(a->Collides(b)){
                 //std::cout << "collision\n";
-                a->onCollision(b);
+                a->OnCollision(b);
                 ResolveCollision(a, b);
             }
-            
+        }
+    }
+
+    //oprostite mi
+    for(unsigned int i = 0; i < colliders.size(); ++i){
+        for(unsigned int j = 0; j < colliders.size(); ++j){
+            if(i == j) continue;
+            CollisionBody* a = colliders[i];
+            CollisionBody* b = colliders[j];
+
+            if(!ShouldCollide(a, b)) continue;
+
+            if(a->Collides(b)){
+                a->OnCollision(b);
+            }
         }
     }
 }

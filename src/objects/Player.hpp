@@ -6,7 +6,7 @@ public:
     Player(Vector2 pos);
     Player(Rectangle transform);
     void Update(float deltaTime) override;
-    //void onCollision(const CollisionBody* other) override;
+    void OnCollision(const CollisionBody* other) override;
     void Draw() override;
 
     void MoveLeft();

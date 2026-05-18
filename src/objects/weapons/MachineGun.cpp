@@ -6,8 +6,13 @@ void MachineGunBullet::Update(float deltaTime){
     Translate({0, velocity * deltaTime});
 }
 
+void MachineGunBullet::OnCollision(const CollisionBody* other){
+    alive = false;
+}
+
 MachineGunBullet::MachineGunBullet(float velocity) : velocity(velocity){
     //molim te promeni ovo
+    collider.mask = LAYER_ENEMY | LAYER_WALL;
     SetTransform({0, 0, 50, 50});
 }
 
