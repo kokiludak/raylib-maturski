@@ -59,15 +59,14 @@ int main()
     input.setFire(&fire);
 
 
-    Enemy* slime = SpawnBus::Spawn<Slime>(player);
-    slime->SetCenter({200, 200});
+    
 
 
     CollisionBody* testWalls[100];
     for(int i = 0; i < 100; i++){
         testWalls[i] = SpawnBus::Spawn<CollisionBody>();
         testWalls[i]->SetTransform({1200.0f, 600.0f, 1200, 100});
-        testWalls[i]->SetCenter({800.0f + 200.0f * i, 600 - 100.0f * i});
+        testWalls[i]->SetCenter({600.0f + 200.0f * i, 600 - 100.0f * i});
         testWalls[i]->collider = {
             LAYER_WALL,
             0
@@ -86,6 +85,11 @@ int main()
         accumulator += delta;
         camera.target = player->GetCenter();
 
+
+        if(IsKeyPressed(KEY_Y)){
+            SpawnBus::Spawn<Slime>(player, Vector2{200, 200});
+            //slime->SetCenter({200, 200});
+        }
         std::vector<Command*> inputs = input.handleInput();
         for(Command* c : inputs){
             c->execute();
@@ -95,6 +99,7 @@ int main()
         while(accumulator >= 1.0 / physics.UPS){
             physics.Update(1.0 / physics.UPS);
             accumulator -= 1.0 / physics.UPS;
+            
         }
        
 

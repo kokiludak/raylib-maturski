@@ -21,6 +21,9 @@ private:
     std::vector<RigidBody*> bodies;
     std::vector<CollisionBody*> colliders;
     void ResolveCollisions();
+    bool Collides(const CollisionBody* a, const CollisionBody* b) const {
+        return CheckCollisionRecs(a->GetTransform(), b->GetTransform());
+    }
     bool ShouldCollide(const CollisionBody* a, const CollisionBody *b) const;
     void ResolveCollision(RigidBody* a, CollisionBody *b);
 };

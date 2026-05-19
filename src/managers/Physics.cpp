@@ -1,7 +1,7 @@
 #include "Physics.hpp"
 #include <algorithm>
 #include <raymath.h>
-
+#include <iostream>
 /*
 Generalno ne znam koji me je demon obuzeo da pravim asimetricne kolizije,
 kako to moze biti dobro, bog zna haha... mozda i nije toliko strasno ali\
@@ -57,7 +57,6 @@ void Physics::ResolveCollisions(){
             if(i == j) continue;
             RigidBody* a = bodies[i];
             RigidBody* b = bodies[j];
-
             if(!ShouldCollide(a, b)) continue;
 
             if(a->Collides(b)){
@@ -80,15 +79,19 @@ void Physics::ResolveCollisions(){
 
     //oprostite mi
     for(unsigned int i = 0; i < colliders.size(); ++i){
-        for(unsigned int j = 0; j < colliders.size(); ++j){
-            if(i == j) continue;
+        for(unsigned int j = i+1; j < colliders.size(); ++j){
             CollisionBody* a = colliders[i];
             CollisionBody* b = colliders[j];
 
-            if(!ShouldCollide(a, b)) continue;
+            if(!Collides(a, b)) continue;
 
-            if(a->Collides(b)){
+            if(ShouldCollide(a, b)){
+                std::cout << "zdravo\n";
                 a->OnCollision(b);
+            }
+            if(ShouldCollide(b, a)){
+                std::cout << "vozdra\n";
+                b->OnCollision(a);
             }
         }
     }

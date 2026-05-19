@@ -10,11 +10,13 @@ void GameManager::RegisterObject(std::unique_ptr<GameObject> obj){
 
     //mozda moze da se resi sa jos observera...
     if(rb) physics->RegisterBody(rb);
-    else if(cb) physics->RegisterCollider(cb);
+    else if(cb) {
+        physics->RegisterCollider(cb);
+    }
 }
 
 void GameManager::Update(float deltaTime){
-    std::cout << "alive objects: " << objects.size() << '\n';
+    //std::cout << "alive objects: " << objects.size() << '\n';
 
     for(auto& obj : objects){
         if(obj->alive)

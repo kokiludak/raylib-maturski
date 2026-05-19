@@ -1,18 +1,20 @@
 #include "MachineGun.hpp"
 
 #include <raylib.h>
-
+#include <iostream>
 void MachineGunBullet::Update(float deltaTime){
     Translate({0, velocity * deltaTime});
 }
 
 void MachineGunBullet::OnCollision(const CollisionBody* other){
-    alive = false;
+    std::cout << "i am sand man\n";
+    if(other->collider.layer != LAYER_PLAYER) alive = false;
 }
 
 MachineGunBullet::MachineGunBullet(float velocity) : velocity(velocity){
     //molim te promeni ovo
-    collider.mask = LAYER_ENEMY | LAYER_WALL;
+    collider.layer = LAYER_FRIENDLY_PROJECTILE;
+    collider.mask = LAYER_WALL | LAYER_ENEMY;
     SetTransform({0, 0, 50, 50});
 }
 

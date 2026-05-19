@@ -5,7 +5,7 @@ class Slime : public Enemy {
 public:
     void AI(float deltaTime) override;
     void Draw() override;
-    Slime(Player *p)
+    Slime(Player *p, Vector2 pos)
         : Enemy(p, {
             .hp = 4,
             .rigidBody = {
@@ -14,6 +14,8 @@ public:
                 .gravityScale = 0.0f
             }
         }) 
-        {}
+        {
+            SetTransform({pos.x, pos.y, 100, 100});
+        }
     
 };

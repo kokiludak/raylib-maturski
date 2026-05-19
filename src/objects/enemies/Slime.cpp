@@ -12,7 +12,7 @@ void Slime::AI(float deltaTime){
 
 void Slime::Draw(){
     Vector2 center = GetCenter();
-    DrawCircle(center.x, center.y, 50, RED);
+    DrawCircle(center.x, center.y, GetTransform().width/2, RED);
 
 
     
