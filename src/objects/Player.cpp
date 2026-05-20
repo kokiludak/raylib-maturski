@@ -61,7 +61,12 @@ void Player::Draw(){
 
 void Player::OnCollision(const CollisionBody* other) {
     if(other->collider.layer == LAYER_ENEMY){
-        velocity.y = -BOUNCE_HEIGHT;
-        weapon->Reload();
+        if(GetCenter().y < other->GetPosition().y){
+            velocity.y = -BOUNCE_HEIGHT;
+            weapon->Reload();
+        }
+        else if(invulnerabilityTime <= 0){
+            
+        }
     }
 }

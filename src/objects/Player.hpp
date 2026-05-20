@@ -3,6 +3,9 @@
 #include "weapons/Weapon.hpp"
 class Player : public RigidBody {
 public:
+    ~Player(){
+        delete weapon;
+    }
     Player(Vector2 pos);
     Player(Rectangle transform);
     void Update(float deltaTime) override;
@@ -17,4 +20,6 @@ public:
 private:
     Vector2 desiredMovement;
     int hp;
+    float invulnerabilityTime = 1.0f;
+    float currentInvulnerability = invulnerabilityTime;
 };

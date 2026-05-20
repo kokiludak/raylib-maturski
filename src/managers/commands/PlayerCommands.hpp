@@ -3,6 +3,7 @@
 #include "../../objects/Player.hpp"
 class MoveLeft : public Command {
 public:
+    MoveLeft() = default;
     MoveLeft(Player *p);
     void execute() override;
 private:
@@ -11,6 +12,7 @@ private:
 
 class MoveRight : public Command {
 public:
+    MoveRight() = default;
     MoveRight(Player *p);
     void execute() override;
 private:
@@ -19,6 +21,7 @@ private:
 
 class Fire : public Command{
 public:
+    Fire() = default;
     Fire(Player *p);
     void execute() override;
 private:
@@ -27,6 +30,7 @@ private:
 
 class Stop : public Command {
 public:
+    Stop() = default;
     Stop(Player *p);
     void execute() override;
 private:

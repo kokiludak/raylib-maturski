@@ -25,5 +25,6 @@ private:
         return CheckCollisionRecs(a->GetTransform(), b->GetTransform());
     }
     bool ShouldCollide(const CollisionBody* a, const CollisionBody *b) const;
+    void ResolveCollision(RigidBody* a, RigidBody* b);
     void ResolveCollision(RigidBody* a, CollisionBody *b);
 };

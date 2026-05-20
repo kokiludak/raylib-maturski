@@ -21,6 +21,8 @@ public:
     currentAmmo(maxAmmo)
     {}
 
+    virtual ~Weapon() = default;
+
     void Update(float deltaTime);
 
     //mozda nije pametno

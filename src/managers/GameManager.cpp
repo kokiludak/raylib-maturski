@@ -9,9 +9,9 @@ void GameManager::RegisterObject(std::unique_ptr<GameObject> obj){
     objects.push_back(std::move(obj));
 
     //mozda moze da se resi sa jos observera...
-    if(rb) physics->RegisterBody(rb);
+    if(rb) physics.RegisterBody(rb);
     else if(cb) {
-        physics->RegisterCollider(cb);
+        physics.RegisterCollider(cb);
     }
 }
 
@@ -28,10 +28,10 @@ void GameManager::Update(float deltaTime){
             CollisionBody* cb = dynamic_cast<CollisionBody*>(obj.get());
             RigidBody* rb = dynamic_cast<RigidBody*>(obj.get());
             if(rb){
-                physics->UnRegisterBody(rb);
+                physics.UnRegisterBody(rb);
             }
             else if(cb){
-                physics->UnRegisterCollider(cb);
+                physics.UnRegisterCollider(cb);
             }
         }
     }
@@ -48,6 +48,8 @@ void GameManager::Update(float deltaTime){
 //TODO: z index
 void GameManager::Render(){
     for(auto& obj : objects){
-        obj->Draw();
+        if(obj->alive){
+            obj->Draw();
+        }
     }
 }
