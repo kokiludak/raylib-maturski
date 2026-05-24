@@ -1,10 +1,16 @@
 #pragma once
 #include "../RigidBody.hpp"
 #include "../Player.hpp"
-
+#include "../TexturedObject.hpp"
 struct EnemyParams{
     int hp = 4;
     RigidBodyParams rigidBody;
+};
+
+struct EnemySpawnInfo {
+    enum Placement { FLOOR, WALL, FLOATING };
+    Placement placement;
+    float weight;
 };
 
 class Enemy : public RigidBody {

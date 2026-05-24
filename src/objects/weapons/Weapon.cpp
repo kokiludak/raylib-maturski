@@ -16,6 +16,10 @@ float Weapon::GetRecoil(){
     return recoil;
 }
 
+int Weapon::GetCurrentAmmo(){
+    return currentAmmo;
+}
+
 bool Weapon::Fire(Vector2 position){
     if(currentCooldown > 0.0f) return false;
 

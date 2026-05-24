@@ -16,8 +16,6 @@ void GameManager::RegisterObject(std::unique_ptr<GameObject> obj){
 }
 
 void GameManager::Update(float deltaTime){
-    //std::cout << "alive objects: " << objects.size() << '\n';
-
     for(auto& obj : objects){
         if(obj->alive)
             obj->Update(deltaTime);

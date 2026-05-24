@@ -1,7 +1,7 @@
 #include "Physics.hpp"
 #include <algorithm>
 #include <raymath.h>
-
+#include <iostream>
 void Physics::RegisterBody(RigidBody* body){
     bodies.emplace_back(body);
 }

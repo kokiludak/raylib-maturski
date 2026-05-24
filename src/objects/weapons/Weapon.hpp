@@ -26,6 +26,7 @@ public:
     void Update(float deltaTime);
 
     //mozda nije pametno
+    int GetCurrentAmmo();
     void CoolDown();
     void Reload();
     bool Fire(Vector2 position);

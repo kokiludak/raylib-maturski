@@ -4,6 +4,8 @@
 
 class GameObject {
 public:
+    GameObject() {}
+    GameObject(Rectangle transform) : transform(transform) {}
     Vector2 GetPosition() const { return {transform.x, transform.y}; }
     Rectangle GetTransform() const { return transform; }
     void SetPosition(const Vector2 pos) {

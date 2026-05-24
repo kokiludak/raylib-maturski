@@ -7,7 +7,7 @@ Enemy::Enemy(Player* player,
         hp(params.hp)
 {
     collider.layer = LAYER_ENEMY;
-    collider.mask = LAYER_PLAYER | LAYER_FRIENDLY_PROJECTILE;
+    collider.mask = LAYER_PLAYER | LAYER_FRIENDLY_PROJECTILE | LAYER_WALL;
 }
 
 void Enemy::onDeath(){
@@ -22,11 +22,10 @@ void Enemy::Update(float deltaTime){
 }
 
 void Enemy::OnCollision(const CollisionBody* other){
-    if(other->collider.layer == LAYER_PLAYER && other->GetCenter().y < GetCenter().y){
+    if(other->collider.layer == LAYER_PLAYER && other->GetCenter().y < GetPosition().y){
         onDeath();
     }
     else if(other->collider.layer == LAYER_FRIENDLY_PROJECTILE){
-        std::cout << "I am iceman\n";
         hp--;
     }
 }

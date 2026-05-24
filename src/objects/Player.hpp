@@ -11,7 +11,10 @@ public:
     void Update(float deltaTime) override;
     void OnCollision(const CollisionBody* other) override;
     void Draw() override;
-
+    
+    int GetHealth(){
+        return hp;
+    }
     void MoveLeft();
     void MoveRight();
     void Fire();
@@ -19,7 +22,7 @@ public:
     Weapon* weapon = nullptr;
 private:
     Vector2 desiredMovement;
-    int hp;
+    int hp = 4;
     float invulnerabilityTime = 1.0f;
     float currentInvulnerability = invulnerabilityTime;
 };

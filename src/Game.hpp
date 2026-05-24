@@ -4,15 +4,10 @@
 #include "managers/Physics.hpp"
 #include "managers/GameManager.hpp"
 #include "managers/InputManager.hpp"
+#include "World.hpp"
 #include "objects/Player.hpp"
 #include "managers/commands/PlayerCommands.hpp"
 
-/*
-class MoveLeft;
-class MoveRight;
-class Stop;
-class Fire;
-*/
 
 class Game {
 public:
@@ -23,13 +18,14 @@ private:
     Physics physics;
     GameManager gameManager;
     InputManager input;
+    World world;
     MoveLeft moveLeft;
     MoveRight moveRight;
     Stop stop;
     Fire fire;
 
-
     Player* player = nullptr;
-    std::vector<CollisionBody*> testWalls;
     float accumulator = 0.0f;
+
+    CollisionBody* wall;
 };

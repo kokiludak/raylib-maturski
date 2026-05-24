@@ -10,11 +10,11 @@ constexpr float ACCELERATION = 10000.0;
 constexpr float JUMP_HEIGHT = 1000.0;
 constexpr float BOUNCE_HEIGHT = 400.0;
 
-Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f}){
+Player::Player(Vector2 pos) : RigidBody(RigidBodyParams { .maxSpeedX = 1500.f, .maxSpeedY = 4000.0f}){
     SetPosition(pos);
 }
 
-Player::Player(Rectangle transform) : RigidBody(RigidBodyParams {.maxSpeedX = 1500.f}){
+Player::Player(Rectangle transform) : RigidBody(RigidBodyParams {.maxSpeedX = 1500.f, .maxSpeedY = 4000.0f}){
     SetTransform(transform);
 }
 
@@ -40,6 +40,8 @@ void Player::Stop(){
 }
 
 void Player::Update(float deltaTime)  {
+
+    currentInvulnerability -= deltaTime;
     AddAcceleration({desiredMovement.x * ACCELERATION, 0});
 
     if(isGrounded) weapon->Reload();
@@ -65,8 +67,9 @@ void Player::OnCollision(const CollisionBody* other) {
             velocity.y = -BOUNCE_HEIGHT;
             weapon->Reload();
         }
-        else if(invulnerabilityTime <= 0){
-            
+        else if(currentInvulnerability <= 0){
+            hp--;
+            currentInvulnerability = invulnerabilityTime;
         }
     }
 }

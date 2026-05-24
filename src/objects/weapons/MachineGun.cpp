@@ -21,6 +21,6 @@ void MachineGunBullet::Draw(){
 }
 
 void MachineGun::OnFire(Vector2 position){
-    MachineGunBullet* bullet = SpawnBus::Spawn<MachineGunBullet>(3000);
+    MachineGunBullet* bullet = SpawnBus::Spawn<MachineGunBullet>(7000);
     bullet->SetCenter(position);
 }
